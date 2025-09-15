@@ -1,6 +1,7 @@
 
 import sys
 sys.path.append("..")
+sys.path.append("plot_python_version")
 from src.grid_world import GridWorld
 import random
 import numpy as np
@@ -8,9 +9,10 @@ import numpy as np
 # Example usage:
 if __name__ == "__main__":             
     env = GridWorld()
-    state = env.reset()               
+    state = env.reset()    
+    env.render()           
     for t in range(1000):
-        env.render()
+        # env.render()
         action = random.choice(env.action_space)
         next_state, reward, done, info = env.step(action)
         print(f"Step: {t}, Action: {action}, State: {next_state+(np.array([1,1]))}, Reward: {reward}, Done: {done}")
