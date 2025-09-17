@@ -32,7 +32,6 @@ ACTION_STR_DICT = {
 }
 
 # Special states (Only for ASSIGNMENT 1!!!)
-# 先列后行, 从0开始
 TARGET_STATE = (2, 2)
 # FORBIDDEN_STATES = [(2, 1), (1, 2), (1, 3)]
 FORBIDDEN_STATES = [(1,2), (2,1), (3,1)]
@@ -80,7 +79,7 @@ def state_to_whole_idx(state_coord):
     idx = STATE_INDEX_LIST.index(state_coord) + 1
     return idx_to_whole_idx(idx)
 
-def create_policy(policy_type: str = 'deterministic', forbidden_states=FORBIDDEN_STATES):
+def create_policy(policy_type: str = 'deterministic', ):
     """
     Define policy manually, 
     """
@@ -189,7 +188,9 @@ def run_simulation(env, policy_matrix, start_state, num_steps=50):
     return trajectory
 
 def calculate_discounted_return(trajectory, gamma):
-    """calculate the total discounted return of a trajectory"""
+    """
+    calculate the total discounted return of a trajectory
+    """
     total_return = 0.0
     for i, (_, _, reward) in enumerate(trajectory):
         total_return += (gamma ** i) * reward
@@ -201,8 +202,6 @@ def calculate_discounted_return(trajectory, gamma):
 # =============================================================================
 
 if __name__ == "__main__":
-    
-    # simulated args
     class MockArgs:
         env_size = ENV_SIZE
         start_state = (0, 0)
@@ -212,9 +211,7 @@ if __name__ == "__main__":
         reward_target = REWARD_TARGET
         reward_forbidden = REWARD_FORBIDDEN
         reward_step = REWARD_STEP
-        animation_interval = 0.1
         debug = False
-        
     args = MockArgs()
     
     # init environment
@@ -229,19 +226,20 @@ if __name__ == "__main__":
     
     # 1. Deterministic Policy
     print("--- Deterministic Policy ---")
-    policy_det = create_policy("deterministic", FORBIDDEN_STATES)
+    policy_det = create_policy("deterministic",)
     trajectory_det = run_simulation(env, policy_det, start_coord, num_steps=50)
     return_det = calculate_discounted_return(trajectory_det, GAMMA)
     print(f"Starting from {start_coord}, Total Discounted Return of the Trajectory: {return_det:.4f}")
     
     # 2. Stochastic Policy
     print("\n--- Stochastic Policy ---")
-    policy_sto = create_policy("stochastic", FORBIDDEN_STATES)
+    policy_sto = create_policy("stochastic",)
     trajectory_sto = run_simulation(env, policy_sto, start_coord, num_steps=50)
     return_sto = calculate_discounted_return(trajectory_sto, GAMMA)
     print(f"Starting from {start_coord}, Total Discounted Return of the Trajectory: {return_sto:.4f}")
 
     def visualization(plot_policy_type="deterministic"):
+        
         # --- Visualization ---
         if plot_policy_type == "deterministic":
             policy_to_plot = policy_det
@@ -257,13 +255,10 @@ if __name__ == "__main__":
         env.add_policy(policy_to_plot)
 
         # output the policy
-        # np.savetxt(f"A1/policy_{plot_policy_type}.csv", np.round(policy_to_plot, 2), delimiter=",")
         np.savetxt(f"A1/policy_{plot_policy_type}.csv", policy_to_plot, delimiter=",")
-        # np.savetxt(f"A1/policy_{plot_policy_type}.txt", np.round(policy_to_plot,1), delimiter=" ")
 
         # output the policy plot
         env.canvas.savefig(f"A1/policy_{plot_policy_type}.png")
-
         
         # 2. running and render the trajectory
         for (state_coord, action_idx, reward) in trajectory_to_plot:
@@ -276,11 +271,13 @@ if __name__ == "__main__":
         # output the trajectory plot
         env.canvas.savefig(f"A1/trajectory_{plot_policy_type}.png")
 
-        plt.show(block=True)
-        # 清空 plt
-        plt.clf()
+        input(f"========== Now showing the {plot_policy_type} policy and trajectory. Press Enter to close the plot window and continue... ==========")
+
+        plt.close(env.canvas)
+        env.canvas = None
+        env.ax = None
     
-    # visualization("deterministic")
+    visualization("deterministic")
     visualization("stochastic")
     
 
