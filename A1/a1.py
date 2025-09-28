@@ -31,6 +31,8 @@ ACTION_STR_DICT = {
     (0, 0): "Stay"    
 }
 
+ACTION_STR_DICT_REVERSE = {v: k for k, v in ACTION_STR_DICT.items()}
+
 # Special states (Only for ASSIGNMENT 1!!!)
 TARGET_STATE = (2, 2)
 # FORBIDDEN_STATES = [(2, 1), (1, 2), (1, 3)]
@@ -56,13 +58,13 @@ REWARD_STEP = 0.0
 # s1, s2, s3, s4, s5
 # s6, s7, fo, fo, s8
 # s9, fo, s10(target), s11, s12
-STATE_INDEX_LIST = [
+COORD_INDEX_LIST = [
     (0,0), (1,0), (2,0), (3,0), (4,0),
     (0,1), (1,1), (4,1),
     (0,2), (2,2), (3,2), (4,2)
 ]
-def index_to_state(state_idx):
-    return STATE_INDEX_LIST[state_idx-1]
+def index_to_coord(state_idx):
+    return COORD_INDEX_LIST[state_idx-1]
 
 # def state_to_index(state_coord):
 #     return STATE_INDEX_LIST.index(state_coord) + 1
@@ -76,7 +78,7 @@ def idx_to_whole_idx(state_idx):
     return idx_transform_dict[state_idx]
 
 def state_to_whole_idx(state_coord):
-    idx = STATE_INDEX_LIST.index(state_coord) + 1
+    idx = COORD_INDEX_LIST.index(state_coord) + 1
     return idx_to_whole_idx(idx)
 
 def create_policy(policy_type: str = 'deterministic', ):
@@ -222,7 +224,7 @@ if __name__ == "__main__":
     
     # starting state setting
     start_idx = 1
-    start_coord = index_to_state(start_idx)
+    start_coord = index_to_coord(start_idx)
     
     # 1. Deterministic Policy
     print("--- Deterministic Policy ---")
