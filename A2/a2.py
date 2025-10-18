@@ -1,17 +1,4 @@
 
-"""
-code todo list:
-1. define r_pi, and P_pi
-    手动编辑，r_pi = [reward]
-    P_pi其实是probability transition matrix.
-2. using closed-form solution to compute V_pi
-    矩阵运算
-3. develop iterative policy evaluation to compute V_pi
-
-4. plot the state value without policy arrows
-
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
@@ -23,14 +10,9 @@ from plot_python_version.src.grid_world import GridWorld
 # =============================================================================
 # import setting from a1.py
 # =============================================================================
-
 from A1.a1 import (
     ENV_SIZE,
-    NUM_STATES,
     ACTION_SPACE,
-    NUM_ACTIONS,
-    ACTION_STR_DICT,
-    ACTION_STR_DICT_REVERSE,
     TARGET_STATE,
     FORBIDDEN_STATES,
     GAMMA,
@@ -38,11 +20,9 @@ from A1.a1 import (
     REWARD_FORBIDDEN,
     REWARD_BOUNDARY,
     REWARD_STEP,
-    index_to_coord,
-    idx_to_whole_idx,
-    state_to_whole_idx,
     create_policy,   
 )
+# =============================================================================
 
 def coord_transform(coord, action):
     next_coord = (coord[0] + action[0], coord[1] + action[1])
@@ -114,6 +94,7 @@ def iterative_policy_evaluation(r_pi, P_pi, gamma=GAMMA, theta=1e-6, max_iterati
             break
     return V_pi
 
+
 def init_env():
     class MockArgs:
         env_size = ENV_SIZE
@@ -136,6 +117,7 @@ def init_env():
     env.reset()
     env.render()
     return env
+
 
 if __name__ == "__main__":
 
@@ -184,6 +166,6 @@ if __name__ == "__main__":
     get_V_pi_and_visualize(r_pi_sto, P_pi_sto, "stochastic", "iterative")
 
 
-from A2.holiday_special import show_holiday_easter_egg
-show_holiday_easter_egg()
+    from A2.holiday_special import show_holiday_easter_egg
+    show_holiday_easter_egg()
 

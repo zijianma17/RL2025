@@ -141,6 +141,10 @@ class GridWorld():
         for state, state_action_group in enumerate(policy_matrix):    
             x = state % self.env_size[0]
             y = state // self.env_size[0]
+            ##### Modification starts here #####
+            if (y, x) in self.forbidden_states:
+                continue
+            ##### Modification ends here #####
             for i, action_probability in enumerate(state_action_group):
                 if action_probability !=0:
                     dx, dy = self.action_space[i]
@@ -153,6 +157,13 @@ class GridWorld():
         '''
             values: iterable
         '''
+
+        ##### Modification starts here #####
+        # remove the previous texts
+        for txt in self.ax.texts:
+            txt.remove()
+        ##### Modification ends here #####
+
         values = np.round(values, precision)
         for i, value in enumerate(values):
             x = i % self.env_size[0]
